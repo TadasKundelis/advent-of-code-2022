@@ -2,7 +2,7 @@ import scala.io.Source
 import scala.math._
 
 object Solution extends App {
-  val nums = Source.fromFile("./input.txt").getLines.toList
+  val lines = Source.fromFile("./input.txt").getLines.toList
 
   def sumCaloriesPerElf(calories: List[String], currSum: Int = 0, numLists: List[Int] = List.empty): List[Int] = calories match {
       case Nil => numLists
@@ -10,15 +10,15 @@ object Solution extends App {
       case head :: tail => sumCaloriesPerElf(tail, currSum + head.toInt, numLists)
   }
 
-  def solvePart1(nums: List[String]): Int = sumCaloriesPerElf(nums).max
+  def solvePart1(lines: List[String]): Int = sumCaloriesPerElf(lines).max
 
-  def solvePart2(nums: List[String]): Int = {
-    sumCaloriesPerElf(nums)
+  def solvePart2(lines: List[String]): Int = {
+    sumCaloriesPerElf(lines)
       .sorted(Ordering.Int.reverse)
       .take(3)
       .sum
   }
 
-  println(solvePart1(nums) == 68787)
-  println(solvePart2(nums) == 198041)
+  println(solvePart1(lines) == 68787)
+  println(solvePart2(lines) == 198041)
 }
