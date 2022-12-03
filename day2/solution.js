@@ -5,8 +5,8 @@ Array.prototype.sum = function () {
 }
 
 function processInput() {
-    const raw_data = fs.readFileSync('./day2/input.txt', 'utf8');
-    return raw_data.split('\n').map(l => l.split(' '))
+    const rawData = fs.readFileSync('./day2/input.txt', 'utf8')
+    return rawData.split('\n').map(l => l.split(' '))
 }
 
 const draw = {
