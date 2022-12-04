@@ -27,8 +27,7 @@ with open('input.txt', 'r') as file:
 
 
     def find_common_char_in_chunk(chunk: List[List[str]]) -> str:
-        first_line, second_line, third_line = chunk
-        return _common_char_in_sets(set(first_line), set(second_line), set(third_line))
+        return _common_char_in_sets(*map(set, chunk))
 
 
     def solve_part2() -> int:
