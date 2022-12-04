@@ -2,7 +2,7 @@ from typing import List, Set
 
 with open('input.txt', 'r') as file:
     lines = file.readlines()
-    lines = [list(l.strip()) for l in lines]
+    lines = [l.strip() for l in lines]
 
     lower_case_letters = 'abcdefghijklmnopqrstuvwxyz'
     letters = f" {lower_case_letters}{lower_case_letters.upper()}"
@@ -13,7 +13,7 @@ with open('input.txt', 'r') as file:
         return char
 
 
-    def find_common_char_in_line_halves(line: List[str]) -> str:
+    def find_common_char_in_line_halves(line: str) -> str:
         mid = len(line) // 2
         return _common_char_in_sets(set(line[:mid]), set(line[mid:]))
 
@@ -22,11 +22,11 @@ with open('input.txt', 'r') as file:
         return sum(map(letters.index, map(find_common_char_in_line_halves, lines)))
 
 
-    def chunks() -> List[List[List[str]]]:
+    def chunks() -> List[List[str]]:
         return [lines[i:i + 3] for i in range(0, len(lines), 3)]
 
 
-    def find_common_char_in_chunk(chunk: List[List[str]]) -> str:
+    def find_common_char_in_chunk(chunk: List[str]) -> str:
         return _common_char_in_sets(*map(set, chunk))
 
 
