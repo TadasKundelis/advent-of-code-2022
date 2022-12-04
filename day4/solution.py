@@ -1,10 +1,10 @@
 from functools import reduce
 from typing import List, Callable
+import re
 
 
 def process_input_line(line: str) -> List[List[int]]:
-    first_part, second_part = line.strip().split(',')
-    a, b, c, d = first_part.split('-') + second_part.split('-')
+    a, b, c, d = re.findall(r'\d+', line)
     return [[int(a), int(b)], [int(c), int(d)]]
 
 
@@ -21,7 +21,7 @@ def condition_part1(line: List[int]) -> bool:
 
 
 def condition_part2(line: List[int]) -> bool:
-    a, b, c, d = line
+    _, b, c, _ = line
     return c <= b
 
 
