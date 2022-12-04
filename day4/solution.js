@@ -18,15 +18,15 @@ for (const line of lines) line.sort(sortLine)
 
 function solvePart1() {
     return lines.reduce((count, line) => {
-       const [[a, b], [c, d]] = line
-       return a <= c && b >= d ? count + 1 : count
+        const [[a, b], [c, d]] = line
+        return a <= c && b >= d ? count + 1 : count
     }, 0)
 }
 
 function solvePart2() {
     return lines.reduce((count, line) => {
-       const [[a, b], [c, d]] = line
-       return c <= b ? count + 1 : count
+        const [[a, b], [c, d]] = line
+        return c <= b ? count + 1 : count
     }, 0)
 }
 
