@@ -32,7 +32,3 @@ function solvePart2() {
 
 console.log(solvePart1() == 582)
 console.log(solvePart2() == 893)
-
-
-
-
