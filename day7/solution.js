@@ -90,10 +90,10 @@ function addDirOrFile(line) {
     }
 }
 
-function traverse_and_sum(dir) {
+function traverseAndSum(dir) {
     const size = dir.computeDirSize()
     const total = size <= 100000 ? size : 0
-    return Object.values(dir.childDirs).reduce((acc, curr) => acc + traverse_and_sum(curr), total)
+    return Object.values(dir.childDirs).reduce((acc, curr) => acc + traverseAndSum(curr), total)
 }
 
 const input = readInput()
@@ -101,7 +101,7 @@ const fileSystem = new FileSystem()
 
 function solvePart1() {
     processCommands()
-    return traverse_and_sum(fileSystem.root)
+    return traverseAndSum(fileSystem.root)
 }
 
 const TOTAL_AVAILABLE_SPACE = 70000000
