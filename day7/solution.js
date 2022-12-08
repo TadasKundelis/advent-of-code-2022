@@ -70,7 +70,9 @@ function processCommands() {
                 fileSystem.goToDir(dir)
                 break
             case 'ls':
-                while (i + 1 < input.length && input[i + 1][0] !== '$') addDirOrFile(input[++i])
+                while (i + 1 < input.length && input[i + 1][0] !== '$') {
+                    addDirOrFile(input[++i])
+                }
                 break
         }
         i++
