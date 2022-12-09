@@ -48,13 +48,9 @@ class FileSystem {
     }
 
     goToDir(dir) {
-        if (dir === '/') {
-            this.currentDir = this.root
-        } else if (dir === '..') {
-            this.currentDir = this.currentDir.parentDir
-        } else {
-            this.currentDir = this.currentDir.childDirs[dir]
-        }
+        if (dir === '/') this.currentDir = this.root
+        else if (dir === '..') this.currentDir = this.currentDir.parentDir
+        else this.currentDir = this.currentDir.childDirs[dir]
     }
 }
 
