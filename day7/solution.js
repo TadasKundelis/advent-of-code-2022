@@ -64,16 +64,9 @@ function processCommands() {
     while (i < input.length) {
         const line = input[i]
         const [_, command, dir] = line.split(' ')
-
-        switch (command) {
-            case 'cd':
-                fileSystem.goToDir(dir)
-                break
-            case 'ls':
-                while (i + 1 < input.length && input[i + 1][0] !== '$') {
-                    addDirOrFile(input[++i])
-                }
-                break
+        if (command === 'cd') fileSystem.goToDir(dir)
+        if (command === 'ls') {
+            while (i + 1 < input.length && input[i + 1][0] !== '$') addDirOrFile(input[++i])
         }
         i++
     }
