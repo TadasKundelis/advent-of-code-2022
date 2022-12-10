@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 function readInput() {
-    return fs.readFileSync('./day-9/input.txt', 'utf8')
+    return fs.readFileSync('./09/input.txt', 'utf8')
         .split('\n')
         .map(line => {
             const [direction, steps] = line.split(' ')

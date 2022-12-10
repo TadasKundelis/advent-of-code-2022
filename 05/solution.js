@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 function processInput() {
-    const rawData = fs.readFileSync('./day-5/input.txt', 'utf8')
+    const rawData = fs.readFileSync('./05/input.txt', 'utf8')
     return rawData.split('\n')
         .map(line => line.match(/\d+/g).map(Number))
         .map(([count, from, to]) => [count, from - 1, to - 1])

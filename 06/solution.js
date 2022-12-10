@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 function processInput() {
-    return fs.readFileSync('./day-6/input.txt', 'utf8')
+    return fs.readFileSync('./06/input.txt', 'utf8')
 }
 
 const input = processInput()

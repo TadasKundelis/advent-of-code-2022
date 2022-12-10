@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 function readInput() {
-    return fs.readFileSync('./day-8/input.txt', 'utf8')
+    return fs.readFileSync('./08/input.txt', 'utf8')
         .split('\n').map(line => line.split('').map(Number))
 }
 
@@ -9,37 +9,25 @@ const matrix = readInput()
 
 function seenFromLeft(matrix, row, col) {
     let pos = 0
-    while (pos < col) {
-        if (matrix[row][pos] >= matrix[row][col]) return false
-        pos++
-    }
+    while (pos < col) if (matrix[row][pos++] >= matrix[row][col]) return false
     return true
 }
 
 function seenFromRight(matrix, row, col) {
     let pos = matrix[0].length - 1
-    while (pos > col) {
-        if (matrix[row][pos] >= matrix[row][col]) return false
-        pos--
-    }
+    while (pos > col) if (matrix[row][pos--] >= matrix[row][col]) return false
     return true
 }
 
 function seenFromTop(matrix, row, col) {
     let pos = 0
-    while (pos < row) {
-        if (matrix[pos][col] >= matrix[row][col]) return false
-        pos++
-    }
+    while (pos < row) if (matrix[pos++][col] >= matrix[row][col]) return false
     return true
 }
 
 function seenFromBottom(matrix, row, col) {
     let pos = matrix.length - 1
-    while (pos > row) {
-        if (matrix[pos][col] >= matrix[row][col]) return false
-        pos--
-    }
+    while (pos > row) if (matrix[pos--][col] >= matrix[row][col]) return false
     return true
 }
 
@@ -52,6 +40,8 @@ for (let i = 0; i < matrix.length; i++) {
         }
     }
 }
+
+console.log(count == 1693)
 
 // part 2
 

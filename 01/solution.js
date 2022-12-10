@@ -5,7 +5,7 @@ Array.prototype.sum = function () {
 }
 
 function processInput() {
-    const rawData = fs.readFileSync('./day-1/input.txt', 'utf8');
+    const rawData = fs.readFileSync('./01/input.txt', 'utf8');
     return rawData
         .split('\n\n')
         .map(line => line.split('\n').map(Number))
