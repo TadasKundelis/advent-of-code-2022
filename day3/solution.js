@@ -1,4 +1,5 @@
 const fs = require('fs')
+const {splitIntoChunks} = require("../helpers");
 
 function processInput() {
     const rawData = fs.readFileSync('./day3/input.txt', 'utf8')
@@ -21,20 +22,6 @@ function solvePart1() {
         const commonChar = findCommonChar(line)
         return acc + allLetters.indexOf(commonChar)
     }, 0)
-}
-
-function splitIntoChunks() {
-    const chunks = []
-    let curr = []
-    for (const i in lines) {
-        const line = lines[i]
-        curr.push(line)
-        if (curr.length === 3) {
-            chunks.push(curr)
-            curr = []
-        }
-    }
-    return chunks
 }
 
 function findCommonCharPart2([line1, line2, line3]) {
