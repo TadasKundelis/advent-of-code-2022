@@ -29,7 +29,7 @@ function findCommonCharPart2([line1, line2, line3]) {
 }
 
 function solvePart2() {
-    const chunks = splitIntoChunks()
+    const chunks = splitIntoChunks(lines,3)
 
     return chunks.reduce((acc, chunk) => {
         const commonChar = findCommonCharPart2(chunk)
