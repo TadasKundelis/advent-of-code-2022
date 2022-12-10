@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 function readInput() {
-    return fs.readFileSync('./day8/input.txt', 'utf8')
+    return fs.readFileSync('./day-8/input.txt', 'utf8')
         .split('\n').map(line => line.split('').map(Number))
 }
 

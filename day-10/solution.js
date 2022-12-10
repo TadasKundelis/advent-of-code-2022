@@ -2,7 +2,7 @@ const fs = require('fs')
 const {splitIntoChunks} = require("../helpers");
 
 function readInput() {
-    return fs.readFileSync('./day10/input.txt', 'utf8')
+    return fs.readFileSync('./day-10/input.txt', 'utf8')
         .split('\n')
         .map(line => {
             const [command, num] = line.split(' ')

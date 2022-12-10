@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 function readInput() {
-    return fs.readFileSync('./day7/input.txt', 'utf8').split('\n')
+    return fs.readFileSync('./day-7/input.txt', 'utf8').split('\n')
 }
 
 class File {
