@@ -17,7 +17,7 @@ case class Monkey(
 object Monkey {
   def resolveOperation(regexMatch: Match): (Option[BigInt], BigInt) => BigInt = regexMatch.group(3).mkString match {
     case v if v == "+" => (a: Option[BigInt], b: BigInt) => a.getOrElse(b) + b
-    case v if v == "*" => (a: Option[BigInt], b: BigInt) => (a.getOrElse(b) * b) % 9699690
+    case v if v == "*" => (a: Option[BigInt], b: BigInt) => (a.getOrElse(b) * b) % 9699690 // remove hardcoded value
   }
 
   def createNextMonkeyResolver(regexMatch: Match): (Int) => Int = {
@@ -61,12 +61,12 @@ object Solution extends App {
       val monkey = monkeys(j)
       for (item <- monkey.items) {
         val updatedItem = monkey.operation(item).toInt
-        monkeys(j) = monkeys(j).copy(inspectedCount = monkeys(j).inspectedCount + 1)
-        val nextMonkey = monkey.resolveNextMonkey(updatedItem).toInt
-        val currentItems = monkeys(nextMonkey).items
-        monkeys(nextMonkey) = monkeys(nextMonkey).copy(items = currentItems :+ updatedItem)
+        val nextMonkeyIndex = monkey.resolveNextMonkey(updatedItem).toInt
+        val nextMonkey = monkeys(nextMonkeyIndex)
+        monkeys(nextMonkeyIndex) = nextMonkey.copy(items = nextMonkey.items :+ updatedItem)
       }
-      monkeys(j) = monkeys(j).copy(items = List.empty)
+      val updatedMonkey = monkey.copy(items = List.empty, inspectedCount = monkey.inspectedCount + monkey.items.size) 
+      monkeys(j) = updatedMonkey
     }
   }
   println(monkeys.map(_.inspectedCount).sorted.toList.takeRight(2).reduce(_ * _))
