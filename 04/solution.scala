@@ -7,20 +7,18 @@ object Solution extends App {
     .map(s => ("\\d+".r).findAllIn(s).map(_.toInt).toList)
     .toList
 
-  println(solvePart1(lines) == 582)
-  println(solvePart2(lines) == 893)
+  println(solve(lines, predicatePart1) == 582)
+  println(solve(lines, predicatePart2) == 893)
 
-  def predicatePart1(nums: List[Int]): Boolean = {
-    val a :: b :: c :: d :: Nil = nums
-    (a >= c && b <= d) || (a <= c && b >= d)
+  def unpackList(nums: List[Int]): (Int, Int, Int, Int) = nums match {
+    case List(a, b, c, d) => (a, b, c, d)
   }
 
-  def predicatePart2(nums: List[Int]): Boolean = {
-    val a :: b :: c :: d :: Nil = nums
-    c <= b && a <= d
+  def predicatePart1(a: Int, b: Int, c: Int, d: Int): Boolean = (a >= c && b <= d) || (a <= c && b >= d)
+
+  def predicatePart2(a: Int, b: Int, c: Int, d: Int): Boolean = c <= b && a <= d
+
+  def solve(lines: List[List[Int]], predicate: ((Int, Int, Int, Int)) => Boolean): Int = {
+    lines.map(unpackList).filter(predicate).size
   }
-
-  def solvePart1(lines: List[List[Int]]): Int = lines.filter(predicatePart1).size
-
-  def solvePart2(lines: List[List[Int]]): Int = lines.filter(predicatePart2).size
 }
