@@ -56,19 +56,18 @@ object Solution extends App {
   val monkeyStrings = Source.fromFile("./input.txt").mkString.split("\\n\\n").toList
   var monkeys = monkeyStrings.map(Monkey.apply).toArray
 
-  for (_ <- 1 to 10000) {
-    for (j <- monkeys.indices) {
-      val monkey = monkeys(j)
-      for (item <- monkey.items) {
+  (1 to 10000).foreach { _ =>
+    for (monkeyIndex <- monkeys.indices) {
+      val monkey = monkeys(monkeyIndex)
+      monkey.items.foreach { item => 
         val updatedItem = monkey.operation(item).toInt
         val nextMonkeyIndex = monkey.resolveNextMonkey(updatedItem).toInt
         val nextMonkey = monkeys(nextMonkeyIndex)
         monkeys(nextMonkeyIndex) = nextMonkey.copy(items = nextMonkey.items :+ updatedItem)
       }
       val updatedMonkey = monkey.copy(items = List.empty, inspectedCount = monkey.inspectedCount + monkey.items.size) 
-      monkeys(j) = updatedMonkey
+      monkeys(monkeyIndex) = updatedMonkey
     }
   }
   println(monkeys.map(_.inspectedCount).sorted.toList.takeRight(2).reduce(_ * _))
-
 }
