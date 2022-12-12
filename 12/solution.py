@@ -55,8 +55,8 @@ Square = namedtuple('State', ['row', 'col', 'height'])
 Matrix = List[List[str]]
 
 def solve_part1(matrix: Matrix) -> int:
-    start_row, start_col = find_start(matrix)
-    end_row, end_col = find_end(matrix)
+    start_row, start_col = find_square('S', matrix)
+    end_row, end_col = find_square('E', matrix)
 
     matrix[end_row][end_col] = 'z'
 
@@ -77,26 +77,33 @@ def solve_part1(matrix: Matrix) -> int:
             heapq.heappush(heap, (current_cost + 1, next_square))
 
 
-def find_next_squares(current_state: Square, matrix: Matrix, visited: Set[Tuple[int, int]]) -> List[Square]:
+def find_next_squares(current_square: Square, matrix: Matrix, visited: Set[Tuple[int, int]]) -> List[Square]:
     row_modifier = [-1, 0, 1, 0]
     col_modifier = [0, 1, 0, -1]
 
     next_squares = []
 
     for i in range(4):
-        new_row = current_state.row + row_modifier[i]
-        new_col = current_state.col + col_modifier[i]
+        new_row = current_square.row + row_modifier[i]
+        new_col = current_square.col + col_modifier[i]
 
-        if new_row < 0 or new_row == len(matrix) or new_col < 0 or new_col == len(matrix[0]):
+        if out_of_bounds(new_row, new_col, matrix):
             continue
 
-        next_square_height = ord(matrix[new_row][new_col])
-
-        if (new_row, new_col) not in visited and next_square_height - current_state.height < 2:
-            next_squares.append(Square(new_row, new_col, next_square_height))
+        next_square = Square(new_row, new_col, ord(matrix[new_row][new_col]))
+        if can_move_to_square(current_square, next_square, visited):
+            next_squares.append(next_square)
 
     return next_squares
 
+
+def can_move_to_square(current_square: Square, next_square: Square, visited: Set[Tuple[int, int]]) -> bool:
+    height_diff = next_square.height - current_square.height
+    return (next_square.row, next_square.col) not in visited and height_diff < 2
+
+
+def out_of_bounds(row: int, col: int, matrix: Matrix) -> bool:
+    return row < 0 or row == len(matrix) or col < 0 or col == len(matrix[0])
 
 
 def find_starts(matrix: List[List[str]]) -> List[Tuple[int, int]]:
@@ -107,20 +114,12 @@ def find_starts(matrix: List[List[str]]) -> List[Tuple[int, int]]:
                 starts.append((row, col))
     return starts
 
-
-def find_start(matrix: List[List[str]]) -> Tuple[int, int]:
+def find_square(square: str, matrix: Matrix) -> Tuple[int, int]:
     for row, _ in enumerate(matrix):
         for col, _ in enumerate(matrix[row]):
-            if matrix[row][col] == 'S':
+            if matrix[row][col] == square:
                 return row, col
 
 
-def find_end(matrix: List[List[str]]) -> Tuple[int, int]:
-    for row, _ in enumerate(matrix):
-        for col, _ in enumerate(matrix[row]):
-            if matrix[row][col] == 'E':
-                return row, col
-
-
-print(solve_part1(lines))
+print(solve_part1(lines) == 520)
 # print(solve_part2(lines))
