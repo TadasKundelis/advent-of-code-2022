@@ -1,70 +1,24 @@
 import heapq
-from dataclasses import dataclass
+from copy import deepcopy
 from typing import List, Tuple, Set
 from collections import namedtuple
 
 with open('input.txt', 'r') as file:
     lines = [list(line.strip()) for line in file.readlines()]
 
-    letters = 'abcdefghijklmnopqrstuvwxyz'
-
-# def solve_part2(matrix: List[List[str]]) -> int:
-#     res = []
-#     for start_row, start_col in find_starts(matrix):
-#         possible_start_squares = find_next_states(start_row, start_col, matrix, set())
-#         start_squares = []
-#
-#         for p_row, p_col in possible_start_squares:
-#             if letters.index(matrix[p_row][p_col]) - letters.index(matrix[start_row][start_col]) > 1:
-#                 continue
-#             else:
-#                 start_squares.append((p_row, p_col))
-#         # print(start_squares)
-#
-#         heap = []
-#         visited = set()
-#
-#         for square in start_squares:
-#             visited.add(square)
-#             heapq.heappush(heap, (1, square))
-#
-#         while len(heap) > 0:
-#             current = heapq.heappop(heap)
-#             # print("current")
-#             # print(current)
-#             cost = current[0]
-#             row, col = current[1]
-#
-#             next_squares = find_next_states(row, col, matrix, visited)
-#             # print("next squares")
-#             # print(next_squares)
-#
-#             for next_square_row, next_square_col in next_squares:
-#                 next_square = matrix[next_square_row][next_square_col]
-#                 if next_square == 'E' and (matrix[row][col] == 'z' or matrix[row][col] == 'y'):
-#                     res.append(cost + 1)
-#                 elif letters.index(next_square) - letters.index(matrix[row][col]) > 1:
-#                     continue
-#                 else:
-#                     visited.add((next_square_row, next_square_col))
-#                     heapq.heappush(heap, (cost + 1, (next_square_row, next_square_col)))
-#
-#     return min(res)
-
 Square = namedtuple('State', ['row', 'col', 'height'])
 Matrix = List[List[str]]
 
-def solve_part1(matrix: Matrix) -> int:
-    start_row, start_col = find_square('S', matrix)
-    end_row, end_col = find_square('E', matrix)
 
+def solve(matrix: Matrix, *starting_squares: Square) -> int:
+    end_row, end_col = find_square_positions(matrix, 'E')[0]
     matrix[end_row][end_col] = 'z'
-
-    start_square = Square(start_row, start_col, height=ord('a'))
-
     heap = []
-    heapq.heappush(heap, (0, start_square))
-    visited = {(start_row, start_col)}
+    visited = set()
+
+    for square in starting_squares:
+        heapq.heappush(heap, (0, square))
+        visited.add((square.row, square.col))
 
     while len(heap) > 0:
         current_cost, current_state = heapq.heappop(heap)
@@ -75,6 +29,31 @@ def solve_part1(matrix: Matrix) -> int:
                 return current_cost + 1
             visited.add((next_square.row, next_square.col))
             heapq.heappush(heap, (current_cost + 1, next_square))
+
+
+def solve_part1(matrix: Matrix) -> int:
+    start_row, start_col = find_square_positions(matrix, 'S')[0]
+    start_square = Square(start_row, start_col, height=ord('a'))
+    return solve(matrix, start_square)
+
+
+def solve_part2(matrix: Matrix) -> int:
+    starting_squares = []
+
+    for start_row, start_col in find_square_positions(matrix, 'S', 'a'):
+        starting_squares.append(Square(start_row, start_col, height=ord('a')))
+
+    return solve(matrix, *starting_squares)
+
+
+def find_square_positions(matrix: Matrix, *square_names: str) -> List[Tuple[int, int]]:
+    positions = []
+    for row, _ in enumerate(matrix):
+        for col, _ in enumerate(matrix[row]):
+            if matrix[row][col] in square_names:
+                positions.append((row, col))
+
+    return positions
 
 
 def find_next_squares(current_square: Square, matrix: Matrix, visited: Set[Tuple[int, int]]) -> List[Square]:
@@ -106,20 +85,5 @@ def out_of_bounds(row: int, col: int, matrix: Matrix) -> bool:
     return row < 0 or row == len(matrix) or col < 0 or col == len(matrix[0])
 
 
-def find_starts(matrix: List[List[str]]) -> List[Tuple[int, int]]:
-    starts = []
-    for row, _ in enumerate(matrix):
-        for col, _ in enumerate(matrix[row]):
-            if matrix[row][col] == 'S' or matrix[row][col] == 'a':
-                starts.append((row, col))
-    return starts
-
-def find_square(square: str, matrix: Matrix) -> Tuple[int, int]:
-    for row, _ in enumerate(matrix):
-        for col, _ in enumerate(matrix[row]):
-            if matrix[row][col] == square:
-                return row, col
-
-
-print(solve_part1(lines) == 520)
-# print(solve_part2(lines))
+print(solve_part1(deepcopy(lines)) == 520)
+print(solve_part2(deepcopy(lines)) == 508)
