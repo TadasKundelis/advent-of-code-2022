@@ -41,13 +41,13 @@ def resolve_next_sand_position2(cave, current_position, lowest):
 
     if lower not in cave:
         return resolve_next_sand_position2(cave, lower, lowest)
-    elif left not in cave:
+    if left not in cave:
         return resolve_next_sand_position2(cave, left, lowest)
-    elif right not in cave:
+    if right not in cave:
         return resolve_next_sand_position2(cave, right, lowest)
-    else:
-        cave.add(current_position)
-        return current_position
+
+    cave.add(current_position)
+    return current_position
 
 
 def resolve_next_sand_position(cave, current_position, lowest):
@@ -84,18 +84,12 @@ def add_stones(lines):
             x2, y2 = coords2
 
             if x1 != x2:
-                smaller_x = min(x1, x2)
-                bigger_x = max(x1, x2)
-
-                for j in range(smaller_x, bigger_x + 1):
-                    stones.add((j, y1))
+                new_stones = set((x, y1) for x in range(min(x1, x2), max(x1, x2) + 1))
+                stones = stones.union(new_stones)
 
             if y1 != y2:
-                smaller_y = min(y1, y2)
-                bigger_y = max(y1, y2)
-
-                for j in range(smaller_y, bigger_y + 1):
-                    stones.add((x1, j))
+                new_stones = set((x1, y) for y in range(min(y1, y2), max(y1, y2) + 1))
+                stones = stones.union(new_stones)
 
     return stones
 
