@@ -1,37 +1,48 @@
-from typing import List
+from typing import List, Set, Tuple, Callable
+
+Line = List[List[int]]
 
 
-def parse_line(line: str) -> List[List[int]]:
+def parse_line(line: str) -> Line:
     coords = line.strip().split('->')
     return [list(map(int, coord.split(','))) for coord in coords]
 
 
-def solve_part1(lines):
-    cave = add_stones(lines)
-    start = (500, 0)
-    sand_count = 0
+def solve_part1(input: List[Line]):
+    cave, initial_rock_count, lowest_point = init_cave(input)
+    sand_should_stop = lambda y: y + 1 > lowest_point
 
-    while resolve_next_sand_position(cave, start, find_lowest(cave)):
-        sand_count += 1
+    while resolve_next_sand_position(cave, (500, 0), sand_should_stop)[1] < lowest_point:
+        pass
 
-    return sand_count
-
-
-def solve_part2(lines):
-    cave = add_stones(lines)
-    lowest = find_lowest(cave) + 2
-    sand_count = 1
-
-    while resolve_next_sand_position2(cave, (500, 0), lowest) != (500, 0):
-        sand_count += 1
-
-    return sand_count
+    return len(cave) - initial_rock_count - 1  # -1 one for the last sand item
 
 
-def resolve_next_sand_position2(cave, current_position, lowest):
+def solve_part2(input: List[Line]):
+    cave, initial_rock_count, lowest_point = init_cave(input)
+    sand_should_stop = lambda y: y + 1 == lowest_point + 2
+
+    while resolve_next_sand_position(cave, (500, 0), sand_should_stop) != (500, 0):
+        pass
+
+    return len(cave) - initial_rock_count
+
+
+def init_cave(input: List[Line]):
+    cave = add_stones(input)
+    initial_rock_count = len(cave)
+    lowest_point = find_lowest_point(cave)
+    return cave, initial_rock_count, lowest_point
+
+
+def resolve_next_sand_position(
+        cave: Set[Tuple[int, int]],
+        current_position: Tuple[int, int],
+        sand_should_stop: Callable[[int], bool]
+):
     x, y = current_position
 
-    if y + 1 == lowest:
+    if sand_should_stop(y):
         cave.add(current_position)
         return current_position
 
@@ -40,44 +51,23 @@ def resolve_next_sand_position2(cave, current_position, lowest):
     right = (x + 1, y + 1)
 
     if lower not in cave:
-        return resolve_next_sand_position2(cave, lower, lowest)
+        return resolve_next_sand_position(cave, lower, sand_should_stop)
     if left not in cave:
-        return resolve_next_sand_position2(cave, left, lowest)
+        return resolve_next_sand_position(cave, left, sand_should_stop)
     if right not in cave:
-        return resolve_next_sand_position2(cave, right, lowest)
+        return resolve_next_sand_position(cave, right, sand_should_stop)
 
     cave.add(current_position)
     return current_position
 
 
-def resolve_next_sand_position(cave, current_position, lowest):
-    x, y = current_position
-
-    if y + 1 > lowest:
-        return False
-
-    lower = (x, y + 1)
-    left = (x - 1, y + 1)
-    right = (x + 1, y + 1)
-
-    if lower not in cave:
-        return resolve_next_sand_position(cave, lower, lowest)
-    if left not in cave:
-        return resolve_next_sand_position(cave, left, lowest)
-    if right not in cave:
-        return resolve_next_sand_position(cave, right, lowest)
-
-    cave.add(current_position)
-    return True
-
-
-def find_lowest(stones):
+def find_lowest_point(stones):
     return sorted(list(stones), key=lambda x: x[1], reverse=True)[0][1]
 
 
-def add_stones(lines):
+def add_stones(input: List[Line]):
     stones = set()
-    for line in lines:
+    for line in input:
         for i in range(len(line) - 1):
             coords1, coords2 = line[i], line[i + 1]
             x1, y1 = coords1
