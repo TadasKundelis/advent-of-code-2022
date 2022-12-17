@@ -11,21 +11,25 @@ def parse_line(line: str) -> Line:
 def solve_part1(input: List[Line]):
     cave, initial_rock_count, lowest_point = init_cave(input)
     sand_should_stop = lambda y: y + 1 > lowest_point
+    next_sand_position = resolve_next_sand_position(cave, (500, 0), sand_should_stop)
 
-    while resolve_next_sand_position(cave, (500, 0), sand_should_stop)[1] < lowest_point:
-        pass
+    while next_sand_position[1] < lowest_point:
+        cave.add(next_sand_position)
+        next_sand_position = resolve_next_sand_position(cave, (500, 0), sand_should_stop)
 
-    return len(cave) - initial_rock_count - 1  # -1 one for the last sand item
+    return len(cave) - initial_rock_count
 
 
 def solve_part2(input: List[Line]):
     cave, initial_rock_count, lowest_point = init_cave(input)
     sand_should_stop = lambda y: y + 1 == lowest_point + 2
+    next_sand_position = resolve_next_sand_position(cave, (500, 0), sand_should_stop)
 
-    while resolve_next_sand_position(cave, (500, 0), sand_should_stop) != (500, 0):
-        pass
+    while next_sand_position != (500, 0):
+        cave.add(next_sand_position)
+        next_sand_position = resolve_next_sand_position(cave, (500, 0), sand_should_stop)
 
-    return len(cave) - initial_rock_count
+    return len(cave) - initial_rock_count + 1  # + 1 for (500, 0)
 
 
 def init_cave(input: List[Line]):
@@ -43,7 +47,6 @@ def resolve_next_sand_position(
     x, y = current_position
 
     if sand_should_stop(y):
-        cave.add(current_position)
         return current_position
 
     lower = (x, y + 1)
@@ -57,7 +60,6 @@ def resolve_next_sand_position(
     if right not in cave:
         return resolve_next_sand_position(cave, right, sand_should_stop)
 
-    cave.add(current_position)
     return current_position
 
 
