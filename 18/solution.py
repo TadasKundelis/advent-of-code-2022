@@ -34,11 +34,7 @@ def find_bounds(cubes: List[Cube]):
     return min_x, max_x, min_y, max_y, min_z, max_z
 
 
-def find_inner_bubbles(
-        current_position: Cube,
-        cubes: Set[Cube],
-        bounds: Tuple[int, ...]
-) -> Tuple[bool, Set[Cube]]:
+def find_inner_bubbles(current_position: Cube, cubes: Set[Cube], bounds: Tuple[int, ...]) -> Tuple[bool, Set[Cube]]:
     queue = [current_position]
     min_x, max_x, min_y, max_y, min_z, max_z = bounds
     visited = set()
