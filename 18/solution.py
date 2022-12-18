@@ -7,7 +7,7 @@ def solve_part1(cubes: List[Cube]) -> int:
     return sum([6 - count_adjacent_cubes(cube, cubes) for cube in cubes])
 
 
-def solve_part2(cubes: List[Cube]):
+def solve_part2(cubes: List[Cube]) -> int:
     cubes_lookup = {(x, y, z) for x, y, z in lines}
 
     total_uncovered_sides = solve_part1(cubes)
@@ -24,7 +24,7 @@ def solve_part2(cubes: List[Cube]):
     return total_uncovered_sides - internal_sides
 
 
-def find_bounds(cubes: List[Cube]):
+def find_bounds(cubes: List[Cube]) -> Tuple[int, int, int, int, int, int]:
     min_x = min(x for x, y, z in cubes)
     max_x = max(x for x, y, z in cubes)
     min_y = min(y for x, y, z in cubes)
@@ -55,7 +55,7 @@ def find_inner_bubbles(current_position: Cube, cubes: Set[Cube], bounds: Tuple[i
     return True, visited
 
 
-def generate_adjacent_cubes(current_position: Cube, existing_cubes: Set[Cube]):
+def generate_adjacent_cubes(current_position: Cube, existing_cubes: Set[Cube]) -> List[Cube]:
     x, y, z = current_position
     possible_cubes = [
         (x + 1, y, z),
@@ -68,7 +68,7 @@ def generate_adjacent_cubes(current_position: Cube, existing_cubes: Set[Cube]):
     return [cube for cube in possible_cubes if cube not in existing_cubes]
 
 
-def count_adjacent_cubes(current_cube: Cube, cubes: List[Cube]):
+def count_adjacent_cubes(current_cube: Cube, cubes: List[Cube]) -> int:
     count = 0
     current_x, current_y, current_z = current_cube
 
