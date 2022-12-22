@@ -1,4 +1,5 @@
 import re
+from typing import Dict, Any
 
 
 def parse_line(line: str):
@@ -12,7 +13,7 @@ def parse_line(line: str):
         return name.strip(), operation
 
 
-def solve_part1(monkey, graph):
+def solve_part1(monkey: str, graph: Dict[str, Any]):
     action = graph[monkey]
     if isinstance(action, str):
         return action
@@ -21,7 +22,7 @@ def solve_part1(monkey, graph):
         return eval(f"{solve_part1(left, graph)}{operation}{solve_part1(right, graph)}")
 
 
-def solve_part2(monkey, graph):
+def solve_part2(monkey: str, graph: Dict[str, Any]):
     action = graph[monkey]
     if monkey == 'humn':
         return 'X'
@@ -35,11 +36,11 @@ def solve_part2(monkey, graph):
         return eval(result) if 'X' not in result else f"({result})"
 
 
-def get_input_for_part_2(file_contents):
+def get_input_for_part_2(file_contents: str) -> str:
     return re.sub(r'(root: [a-z]+) . ([a-z]+)', '\\1 = \\2', file_contents)
 
 
-def create_graph(file_contents):
+def create_graph(file_contents: str) -> Dict[str, Any]:
     monkeys = [parse_line(line) for line in file_contents.split('\n')]
     return {monkey_name: operation for monkey_name, operation in monkeys}
 
