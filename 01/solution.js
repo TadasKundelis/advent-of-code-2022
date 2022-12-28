@@ -25,4 +25,3 @@ function solvePart2() {
 
 console.log(solvePart1() == 68787)
 console.log(solvePart2() == 198041)
-
